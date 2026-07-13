@@ -3,60 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>학교생활로 알아보는 MBTI 테스트</title>
+
+<title>학교생활 성향 테스트</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"맑은 고딕",sans-serif;}
-body{
-background:#edf5ef;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-padding:20px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Pretendard","맑은 고딕",sans-serif;
 }
+
+body{
+    background:linear-gradient(135deg,#eef7f0,#dceadf,#eef7f0);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.circle{
+    position:fixed;
+    border-radius:50%;
+    z-index:-1;
+}
+
+.c1{
+    width:260px;
+    height:260px;
+    background:#bdd6c3;
+    top:-80px;
+    left:-80px;
+    opacity:.45;
+}
+
+.c2{
+    width:180px;
+    height:180px;
+    background:#8fb29a;
+    bottom:-40px;
+    right:-40px;
+    opacity:.3;
+}
+
 .card{
-background:white;
-width:100%;
-max-width:700px;
-padding:35px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,.12);
+    width:90%;
+    max-width:760px;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(10px);
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 20px 45px rgba(0,0,0,.12);
+    animation:fade .6s;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
 h1{
 text-align:center;
-color:#496b56;
+color:#4f7159;
+font-size:36px;
 margin-bottom:10px;
 }
 
-p{
+h1::after{
+content:"";
+display:block;
+width:70px;
+height:4px;
+background:#8dae94;
+margin:12px auto;
+border-radius:10px;
+}
+
+.subtitle{
 text-align:center;
 color:#666;
-margin-bottom:25px;
+margin-bottom:30px;
 }
 
 .progress{
-height:10px;
-background:#dbe7dd;
-border-radius:10px;
-margin-bottom:25px;
+height:14px;
+background:#dce8df;
+border-radius:20px;
 overflow:hidden;
+margin-bottom:30px;
 }
 
 .bar{
 height:100%;
 width:0%;
-background:#6d9b77;
-transition:.3s;
+background:linear-gradient(90deg,#769e82,#9ec0a7);
+transition:.35s;
+}
+
+.questionBox{
+background:#f6fbf7;
+padding:25px;
+border-radius:18px;
+border-left:8px solid #80a48b;
+margin-bottom:25px;
 }
 
 .question{
 font-size:22px;
+color:#355041;
 font-weight:bold;
-margin-bottom:25px;
-color:#3b5644;
 text-align:center;
+line-height:1.5;
 }
 
 button{
@@ -64,16 +128,18 @@ width:100%;
 padding:15px;
 margin:8px 0;
 border:none;
-border-radius:10px;
-background:#7ea98a;
+border-radius:14px;
+background:#7fa58b;
 color:white;
 font-size:17px;
 cursor:pointer;
-transition:.2s;
+transition:.25s;
 }
 
 button:hover{
-background:#678f72;
+transform:translateY(-3px);
+background:#648b73;
+box-shadow:0 10px 20px rgba(0,0,0,.15);
 }
 
 #result{
@@ -82,40 +148,89 @@ text-align:center;
 }
 
 .type{
-font-size:48px;
-color:#53775d;
-margin:20px;
+font-size:72px;
 font-weight:bold;
+color:#557964;
+margin:20px 0;
+animation:pop .5s;
 }
 
-.small{
+@keyframes pop{
+from{
+transform:scale(.5);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+.desc{
 font-size:18px;
-line-height:1.7;
 color:#555;
+line-height:1.8;
+margin-top:10px;
 }
 
 .restart{
+margin-top:30px;
+}
+
+.footer{
 margin-top:25px;
+text-align:center;
+font-size:13px;
+color:#888;
+}
+
+@media(max-width:600px){
+
+.card{
+padding:25px;
+}
+
+.question{
+font-size:18px;
+}
+
+.type{
+font-size:55px;
+}
+
 }
 </style>
+
 </head>
 
 <body>
+
+<div class="circle c1"></div>
+<div class="circle c2"></div>
 
 <div class="card">
 
 <div id="quiz">
 
-<h1>학교생활로 알아보는 MBTI 테스트</h1>
-<p>학교에서의 행동을 기준으로 성향을 알아보세요.</p>
+<h1>학교생활 성향 테스트</h1>
+
+<div class="subtitle">
+학교에서의 행동을 바탕으로 알아보는 성향 테스트입니다.
+</div>
 
 <div class="progress">
 <div class="bar" id="bar"></div>
 </div>
 
+<div class="questionBox">
 <div class="question" id="question"></div>
+</div>
 
 <div id="answers"></div>
+
+<div class="footer">
+※ 재미를 위한 비공식 성향 테스트입니다.
+</div>
 
 </div>
 
@@ -125,18 +240,18 @@ margin-top:25px;
 
 <div class="type" id="type"></div>
 
-<div class="small" id="desc"></div>
+<div class="desc" id="desc"></div>
 
-<button class="restart" onclick="location.reload()">다시하기</button>
+<button class="restart" onclick="location.reload()">
+다시 테스트하기
+</button>
 
 </div>
 
 </div>
 
 <script>
-
-const questions=[
-
+  const questions=[
 {q:"쉬는 시간에 먼저 친구에게 말을 건다.",type:"EI"},
 {q:"새로운 수행평가를 보면 기대된다.",type:"SN"},
 {q:"친구의 고민은 공감보다 해결이 중요하다.",type:"TF"},
@@ -148,8 +263,15 @@ const questions=[
 {q:"발표하는 것이 재미있다.",type:"EI"},
 {q:"상상을 자주 하는 편이다.",type:"SN"},
 {q:"감정보다 사실을 먼저 본다.",type:"TF"},
-{q:"시간표나 계획표를 자주 작성한다.",type:"JP"}
+{q:"시간표를 작성하는 것을 좋아한다.",type:"JP"}
+];
 
+const choices=[
+["매우 그렇다",2],
+["그렇다",1],
+["보통이다",0],
+["아니다",-1],
+["전혀 아니다",-2]
 ];
 
 let index=0;
@@ -161,14 +283,6 @@ T:0,F:0,
 J:0,P:0
 };
 
-const choices=[
-["매우 그렇다",2],
-["그렇다",1],
-["보통이다",0],
-["아니다",-1],
-["전혀 아니다",-2]
-];
-
 function showQuestion(){
 
 document.getElementById("bar").style.width=
@@ -177,17 +291,19 @@ document.getElementById("bar").style.width=
 document.getElementById("question").innerHTML=
 (index+1)+". "+questions[index].q;
 
-const area=document.getElementById("answers");
-area.innerHTML="";
+const answers=document.getElementById("answers");
+answers.innerHTML="";
 
-choices.forEach(c=>{
+choices.forEach(choice=>{
 
-const b=document.createElement("button");
-b.innerHTML=c[0];
+const btn=document.createElement("button");
+btn.innerHTML=choice[0];
 
-b.onclick=()=>answer(c[1]);
+btn.onclick=function(){
+answer(choice[1]);
+};
 
-area.appendChild(b);
+answers.appendChild(btn);
 
 });
 
@@ -195,18 +311,13 @@ area.appendChild(b);
 
 function answer(value){
 
-let t=questions[index].type;
+const pair=questions[index].type;
 
 if(value>0){
-
-score[t[0]]+=value;
-
+score[pair[0]]+=value;
 }
-
 else if(value<0){
-
-score[t[1]]+=Math.abs(value);
-
+score[pair[1]]+=Math.abs(value);
 }
 
 index++;
@@ -228,6 +339,8 @@ function showResult(){
 document.getElementById("quiz").style.display="none";
 document.getElementById("result").style.display="block";
 
+document.getElementById("bar").style.width="100%";
+
 let result="";
 
 result+=score.E>=score.I?"E":"I";
@@ -237,46 +350,45 @@ result+=score.J>=score.P?"J":"P";
 
 document.getElementById("type").innerHTML=result;
 
-const descs={
+const desc={
 
-ISTJ:"책임감이 강하고 계획적인 모범 학생입니다.",
+ISTJ:"📚 책임감이 강하며 계획적으로 공부하는 모범형입니다. 맡은 일을 끝까지 해내며 신뢰를 받습니다.",
 
-ISFJ:"배려심이 많고 친구를 잘 도와주는 학생입니다.",
+ISFJ:"🤝 친구들을 잘 챙기고 배려심이 많습니다. 조별 활동에서도 안정적인 역할을 합니다.",
 
-INFJ:"깊이 생각하고 목표를 위해 노력하는 학생입니다.",
+INFJ:"🌱 목표가 뚜렷하고 깊이 생각하는 성향입니다. 조용하지만 영향력이 있습니다.",
 
-INTJ:"분석력이 뛰어나고 스스로 공부를 잘합니다.",
+INTJ:"🧠 분석력이 뛰어나며 스스로 공부하는 것을 좋아합니다.",
 
-ISTP:"실습과 문제 해결을 좋아합니다.",
+ISTP:"🔧 문제를 해결하는 능력이 뛰어나고 실습 활동을 좋아합니다.",
 
-ISFP:"차분하고 자신의 속도를 유지합니다.",
+ISFP:"🎨 차분하고 자신의 속도를 유지하는 편입니다.",
 
-INFP:"창의적이며 상상력이 풍부합니다.",
+INFP:"✨ 창의적이며 상상력이 풍부합니다. 새로운 아이디어를 잘 떠올립니다.",
 
-INTP:"호기심이 많고 탐구를 좋아합니다.",
+INTP:"💡 호기심이 많고 탐구하는 것을 즐깁니다.",
 
-ESTP:"활동적이고 도전을 즐깁니다.",
+ESTP:"⚡ 활동적이며 새로운 도전을 좋아합니다.",
 
-ESFP:"밝고 친구들과 잘 어울립니다.",
+ESFP:"😊 밝고 친구들과 잘 어울리는 분위기 메이커입니다.",
 
-ENFP:"새로운 아이디어가 많고 적극적입니다.",
+ENFP:"🌈 새로운 경험과 아이디어를 좋아하는 열정적인 학생입니다.",
 
-ENTP:"토론과 새로운 생각을 좋아합니다.",
+ENTP:"🚀 토론과 창의적인 문제 해결을 좋아합니다.",
 
-ESTJ:"리더십이 강하고 계획적으로 행동합니다.",
+ESTJ:"📅 계획을 세우고 친구들을 이끄는 리더형입니다.",
 
-ESFJ:"친구들과 협력하는 것을 좋아합니다.",
+ESFJ:"💚 협동심이 뛰어나고 주변 사람들을 잘 도와줍니다.",
 
-ENFJ:"사람들을 이끄는 능력이 뛰어납니다.",
+ENFJ:"🌟 리더십과 배려심을 함께 가진 학생입니다.",
 
-ENTJ:"목표 지향적이고 추진력이 강합니다."
+ENTJ:"🏆 목표를 향해 적극적으로 도전하는 추진력 있는 성향입니다."
 
 };
 
 document.getElementById("desc").innerHTML=
-descs[result]||"균형 잡힌 학교생활 성향입니다.";
-
-document.getElementById("bar").style.width="100%";
+desc[result] ||
+"균형 잡힌 학교생활 성향입니다.";
 
 }
 
