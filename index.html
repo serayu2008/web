@@ -2,399 +2,62 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>학교생활 성향 테스트</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>학교생활로 알아보는 MBTI 테스트</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Pretendard","맑은 고딕",sans-serif;
-}
-
-body{
-    background:linear-gradient(135deg,#eef7f0,#dceadf,#eef7f0);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-}
-
-.circle{
-    position:fixed;
-    border-radius:50%;
-    z-index:-1;
-}
-
-.c1{
-    width:260px;
-    height:260px;
-    background:#bdd6c3;
-    top:-80px;
-    left:-80px;
-    opacity:.45;
-}
-
-.c2{
-    width:180px;
-    height:180px;
-    background:#8fb29a;
-    bottom:-40px;
-    right:-40px;
-    opacity:.3;
-}
-
-.card{
-    width:90%;
-    max-width:760px;
-    background:rgba(255,255,255,.92);
-    backdrop-filter:blur(10px);
-    border-radius:25px;
-    padding:40px;
-    box-shadow:0 20px 45px rgba(0,0,0,.12);
-    animation:fade .6s;
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-h1{
-text-align:center;
-color:#4f7159;
-font-size:36px;
-margin-bottom:10px;
-}
-
-h1::after{
-content:"";
-display:block;
-width:70px;
-height:4px;
-background:#8dae94;
-margin:12px auto;
-border-radius:10px;
-}
-
-.subtitle{
-text-align:center;
-color:#666;
-margin-bottom:30px;
-}
-
-.progress{
-height:14px;
-background:#dce8df;
-border-radius:20px;
-overflow:hidden;
-margin-bottom:30px;
-}
-
-.bar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#769e82,#9ec0a7);
-transition:.35s;
-}
-
-.questionBox{
-background:#f6fbf7;
-padding:25px;
-border-radius:18px;
-border-left:8px solid #80a48b;
-margin-bottom:25px;
-}
-
-.question{
-font-size:22px;
-color:#355041;
-font-weight:bold;
-text-align:center;
-line-height:1.5;
-}
-
-button{
-width:100%;
-padding:15px;
-margin:8px 0;
-border:none;
-border-radius:14px;
-background:#7fa58b;
-color:white;
-font-size:17px;
-cursor:pointer;
-transition:.25s;
-}
-
-button:hover{
-transform:translateY(-3px);
-background:#648b73;
-box-shadow:0 10px 20px rgba(0,0,0,.15);
-}
-
-#result{
-display:none;
-text-align:center;
-}
-
-.type{
-font-size:72px;
-font-weight:bold;
-color:#557964;
-margin:20px 0;
-animation:pop .5s;
-}
-
-@keyframes pop{
-from{
-transform:scale(.5);
-opacity:0;
-}
-to{
-transform:scale(1);
-opacity:1;
-}
-}
-
-.desc{
-font-size:18px;
-color:#555;
-line-height:1.8;
-margin-top:10px;
-}
-
-.restart{
-margin-top:30px;
-}
-
-.footer{
-margin-top:25px;
-text-align:center;
-font-size:13px;
-color:#888;
-}
-
-@media(max-width:600px){
-
-.card{
-padding:25px;
-}
-
-.question{
-font-size:18px;
-}
-
-.type{
-font-size:55px;
-}
-
-}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef7f0,#dceadf);display:flex;justify-content:center;align-items:center;min-height:100vh}
+.card{background:#fff;width:90%;max-width:700px;border-radius:20px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,.15)}
+h1{text-align:center;color:#4f7159}.sub{text-align:center;color:#666}
+button{width:100%;padding:14px;margin:8px 0;border:0;border-radius:12px;background:#7fa58b;color:#fff;font-size:16px;cursor:pointer}
+button:hover{background:#678c73}.progress{height:10px;background:#dbe7dd;border-radius:10px;overflow:hidden;margin:20px 0}
+.bar{height:100%;width:0;background:#7fa58b;transition:.3s}.q{font-size:22px;font-weight:bold;text-align:center;margin:20px 0;color:#355041}
+#quiz,#result{display:none}.type{font-size:52px;text-align:center;color:#557964;font-weight:bold}
 </style>
-
 </head>
-
 <body>
-
-<div class="circle c1"></div>
-<div class="circle c2"></div>
-
 <div class="card">
-
+<div id="start">
+<h1>학교생활로 알아보는 MBTI 테스트</h1>
+<p class="sub">학교생활을 바탕으로 알아보는 재미용 성향 테스트입니다.</p>
+<button onclick="start()">테스트 시작</button>
+</div>
 <div id="quiz">
-
-<h1>학교생활 성향 테스트</h1>
-
-<div class="subtitle">
-학교에서의 행동을 바탕으로 알아보는 성향 테스트입니다.
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="q" id="q"></div>
+<div id="a"></div>
 </div>
-
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
-
-<div class="questionBox">
-<div class="question" id="question"></div>
-</div>
-
-<div id="answers"></div>
-
-<div class="footer">
-※ 재미를 위한 비공식 성향 테스트입니다.
-</div>
-
-</div>
-
 <div id="result">
-
-<h1>테스트 결과</h1>
-
+<h1>결과</h1>
 <div class="type" id="type"></div>
-
-<div class="desc" id="desc"></div>
-
-<button class="restart" onclick="location.reload()">
-다시 테스트하기
-</button>
-
+<p id="desc" style="text-align:center"></p>
+<button onclick="location.reload()">다시하기</button>
 </div>
-
 </div>
-
 <script>
-  const questions=[
-{q:"쉬는 시간에 먼저 친구에게 말을 건다.",type:"EI"},
-{q:"새로운 수행평가를 보면 기대된다.",type:"SN"},
-{q:"친구의 고민은 공감보다 해결이 중요하다.",type:"TF"},
-{q:"시험은 미리 계획해서 준비한다.",type:"JP"},
-{q:"혼자 공부하는 시간이 더 좋다.",type:"EI"},
-{q:"익숙한 방법보다 새로운 방법을 시도한다.",type:"SN"},
-{q:"규칙은 지키는 것이 가장 중요하다.",type:"TF"},
-{q:"할 일을 미루지 않는 편이다.",type:"JP"},
-{q:"발표하는 것이 재미있다.",type:"EI"},
-{q:"상상을 자주 하는 편이다.",type:"SN"},
-{q:"감정보다 사실을 먼저 본다.",type:"TF"},
-{q:"시간표를 작성하는 것을 좋아한다.",type:"JP"}
+const qs=[
+{q:"쉬는 시간에 먼저 친구에게 말을 건다.",t:"EI"},
+{q:"새로운 수행평가가 기대된다.",t:"SN"},
+{q:"공감보다 해결책을 제시한다.",t:"TF"},
+{q:"시험 계획을 미리 세운다.",t:"JP"},
+{q:"혼자 공부하는 것이 편하다.",t:"EI"},
+{q:"새로운 방법을 시도하는 것을 좋아한다.",t:"SN"},
+{q:"규칙을 잘 지키는 편이다.",t:"TF"},
+{q:"할 일을 미루지 않는다.",t:"JP"},
+{q:"발표를 좋아한다.",t:"EI"},
+{q:"상상을 자주 한다.",t:"SN"},
+{q:"감정보다 사실을 중시한다.",t:"TF"},
+{q:"시간표를 작성하는 것을 좋아한다.",t:"JP"}
 ];
-
-const choices=[
-["매우 그렇다",2],
-["그렇다",1],
-["보통이다",0],
-["아니다",-1],
-["전혀 아니다",-2]
-];
-
-let index=0;
-
-let score={
-E:0,I:0,
-S:0,N:0,
-T:0,F:0,
-J:0,P:0
-};
-
-function showQuestion(){
-
-document.getElementById("bar").style.width=
-(index/questions.length*100)+"%";
-
-document.getElementById("question").innerHTML=
-(index+1)+". "+questions[index].q;
-
-const answers=document.getElementById("answers");
-answers.innerHTML="";
-
-choices.forEach(choice=>{
-
-const btn=document.createElement("button");
-btn.innerHTML=choice[0];
-
-btn.onclick=function(){
-answer(choice[1]);
-};
-
-answers.appendChild(btn);
-
-});
-
+const c=[["매우 그렇다",2],["그렇다",1],["보통",0],["아니다",-1],["전혀 아니다",-2]];
+let i=0,s={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+function start(){start=document.getElementById("start").style.display="none";quiz.style.display="block";show();}
+function show(){bar.style.width=(i/qs.length*100)+"%";q.textContent=(i+1)+". "+qs[i].q;a.innerHTML="";
+c.forEach(x=>{let b=document.createElement("button");b.textContent=x[0];b.onclick=()=>ans(x[1]);a.appendChild(b);});}
+function ans(v){let t=qs[i].t;if(v>0)s[t[0]]+=v;else if(v<0)s[t[1]]+=-v;i++;if(i<qs.length)show();else res();}
+function res(){quiz.style.display="none";result.style.display="block";
+let r=(s.E>=s.I?"E":"I")+(s.S>=s.N?"S":"N")+(s.T>=s.F?"T":"F")+(s.J>=s.P?"J":"P");
+type.textContent=r;
+desc.textContent="공식 MBTI가 아닌 학교생활 기반의 재미용 성향 결과입니다.";
 }
-
-function answer(value){
-
-const pair=questions[index].type;
-
-if(value>0){
-score[pair[0]]+=value;
-}
-else if(value<0){
-score[pair[1]]+=Math.abs(value);
-}
-
-index++;
-
-if(index<questions.length){
-
-showQuestion();
-
-}else{
-
-showResult();
-
-}
-
-}
-
-function showResult(){
-
-document.getElementById("quiz").style.display="none";
-document.getElementById("result").style.display="block";
-
-document.getElementById("bar").style.width="100%";
-
-let result="";
-
-result+=score.E>=score.I?"E":"I";
-result+=score.S>=score.N?"S":"N";
-result+=score.T>=score.F?"T":"F";
-result+=score.J>=score.P?"J":"P";
-
-document.getElementById("type").innerHTML=result;
-
-const desc={
-
-ISTJ:"📚 책임감이 강하며 계획적으로 공부하는 모범형입니다. 맡은 일을 끝까지 해내며 신뢰를 받습니다.",
-
-ISFJ:"🤝 친구들을 잘 챙기고 배려심이 많습니다. 조별 활동에서도 안정적인 역할을 합니다.",
-
-INFJ:"🌱 목표가 뚜렷하고 깊이 생각하는 성향입니다. 조용하지만 영향력이 있습니다.",
-
-INTJ:"🧠 분석력이 뛰어나며 스스로 공부하는 것을 좋아합니다.",
-
-ISTP:"🔧 문제를 해결하는 능력이 뛰어나고 실습 활동을 좋아합니다.",
-
-ISFP:"🎨 차분하고 자신의 속도를 유지하는 편입니다.",
-
-INFP:"✨ 창의적이며 상상력이 풍부합니다. 새로운 아이디어를 잘 떠올립니다.",
-
-INTP:"💡 호기심이 많고 탐구하는 것을 즐깁니다.",
-
-ESTP:"⚡ 활동적이며 새로운 도전을 좋아합니다.",
-
-ESFP:"😊 밝고 친구들과 잘 어울리는 분위기 메이커입니다.",
-
-ENFP:"🌈 새로운 경험과 아이디어를 좋아하는 열정적인 학생입니다.",
-
-ENTP:"🚀 토론과 창의적인 문제 해결을 좋아합니다.",
-
-ESTJ:"📅 계획을 세우고 친구들을 이끄는 리더형입니다.",
-
-ESFJ:"💚 협동심이 뛰어나고 주변 사람들을 잘 도와줍니다.",
-
-ENFJ:"🌟 리더십과 배려심을 함께 가진 학생입니다.",
-
-ENTJ:"🏆 목표를 향해 적극적으로 도전하는 추진력 있는 성향입니다."
-
-};
-
-document.getElementById("desc").innerHTML=
-desc[result] ||
-"균형 잡힌 학교생활 성향입니다.";
-
-}
-
-showQuestion();
-
 </script>
-
-</body>
-</html>
+</body></html>
